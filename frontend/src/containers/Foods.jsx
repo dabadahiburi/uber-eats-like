@@ -1,6 +1,16 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 
-export const Foods = ({match}) => {
+//api
+import { fetchFoods } from '../apis/foods'
+
+export const Foods = ({ match }) => {
+  //useEffect
+  useEffect(() => {
+    fetchFoods(match.params.restaurantsId)
+      .then((data) =>
+        console.log(data)
+      )
+  },[])
   return (
     <Fragment>
       フード一覧

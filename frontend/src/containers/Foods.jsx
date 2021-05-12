@@ -2,6 +2,7 @@ import React, { Fragment,useReducer, useEffect,useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
+
 //components
 import { LocalMallIcon } from '../components/Icons';
 import { FoodWrapper } from '../components/FoodWrapper';
@@ -29,6 +30,10 @@ import FoodImage from '../images/food-image.jpg';
 import { REQUEST_STATE } from '../constants';
 import { COLORS } from '../style_constants';
 
+const submitOrder = () => {
+  // 後ほど仮注文のAPIを実装します
+  console.log('登録ボタンが押された！')
+}
 
 const HeaderWrapper = styled.div
   `display: flex;
@@ -130,14 +135,28 @@ export const Foods = ({
       </FoodsList>
       {
         state.isOpenOrderDialog&&
-          <FoodOrderDialog
-            food={state.selectedFood}
-            isOpen={state.isOpenOrderDialog}
-            onClose={() => setState({
-              ...state,
-              isOpenOrderDialog: false,
-            })}
-          />
+        <FoodOrderDialog
+        isOpen={state.isOpenOrderDialog}
+        food={state.selectedFood}
+        countNumber={state.selectedFoodCount}
+        onClickCountUp={() => setState({
+          ...state,
+          selectedFoodCount: state.selectedFoodCount + 1,
+        })}
+        onClickCountDown={() => setState({
+          ...state,
+          selectedFoodCount: state.selectedFoodCount - 1,
+        })}
+        // 先ほど作った関数を渡します
+        onClickOrder={() => submitOrder()}
+        // モーダルを閉じる時はすべてのstateを初期化する
+        onClose={() => setState({
+          ...state,
+          isOpenOrderDialog: false,
+          selectedFood: null,
+          selectedFoodCount: 1,
+        })}
+      />
       }
     </Fragment>
   )

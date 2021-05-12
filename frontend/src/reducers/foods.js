@@ -15,7 +15,7 @@ export const foodsReducer = (state, action) => {
     case foodsActionTyps.FETCHING:
       return {
         ...state,
-        fetchState:REQUEST_STATE.LOADING,
+        fetchState: REQUEST_STATE.LOADING,
       };
       case foodsActionTyps.FETCH_SUCCESS:
         return {

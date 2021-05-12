@@ -33,7 +33,7 @@ const FoodImageNode = styled.img
 export const FoodWrapper = ({
   food, onClickFoodWrapper, imageUrl,
 }) => (
-  <Wrapper onclick={() => onClickFoodWrapper(food)}>
+  <Wrapper onClick={() => onClickFoodWrapper(food)}>
     <FoodDetail>
       {food.name}
       <DescriptionWrapper>

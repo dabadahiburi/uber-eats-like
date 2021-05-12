@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect,useReducer } from 'react';
+import React, { Fragment,useReducer, useEffect,useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { LocalMallIcon } from '../components/Icons';
 import { FoodWrapper } from '../components/FoodWrapper';
 import Skeleton from '@material-ui/lab/Skeleton';
+import { FoodOrderDialog } from '../components/FoodOrderDialog';
 
 
 //reducers
@@ -17,7 +18,7 @@ import {
 
 
 //api
-import { fetchFoods } from '../apis/foods'
+import { fetchFoods } from '../apis/foods';
 
 
 //image
@@ -30,9 +31,9 @@ import { COLORS } from '../style_constants';
 
 
 const HeaderWrapper = styled.div
-  `display:flex;
-   justify-content:space-between;
-   padding:8px 32px;`;
+  `display: flex;
+   justify-content: space-between;
+   padding: 8px 32px;`;
 
 const BagIconWrapper = styled.div
   `padding-top: 24px;`;
@@ -41,23 +42,34 @@ const ColoredBagIcon = styled(LocalMallIcon)
   `color: ${COLORS.MAIN};`;
 
 const FoodsList = styled.div
-  `display:flex;
-  justyfy-content:space-around
-  flex-wrap:wrap;
-  margin-bottom:50px;`;
+  `display: flex;
+  justyfy-content: space-around;
+  flex-wrap: wrap;
+  margin-bottom: 50px;`;
 
 //styleImages
 const MainLogoImage = styled.img
-  `height:90px;`;
+  `height: 90px;`;
 
 const ItemWrapper = styled.div
-  `margin:16px;`;
+  `margin: 16px;`;
 
 
 
-export const Foods = ({ match }) => {
+export const Foods = ({
+  match
+}) => {
 
-  const[foodsState,dispatch]=useReducer(foodsReducer,foodsInitialState)
+  const [foodsState, dispatch] = useReducer(foodsReducer, foodsInitialState);
+
+
+  //state
+  const initialState = {
+    isOpenOrderDialog: false,
+    selectedFood: null,
+    selectedFoodCount: 1,
+  }
+  const [state, setState] = useState(initialState);
 
 
   //useEffect
@@ -72,7 +84,8 @@ export const Foods = ({ match }) => {
           }
         });
       })
-  }, [])
+  }, [ ]);
+
   return (
     <Fragment>
       <HeaderWrapper>
@@ -102,13 +115,30 @@ export const Foods = ({ match }) => {
               <ItemWrapper key={food.id}>
                 <FoodWrapper
                   food={food}
-                  onClickFoodWrapper={(food) => console.log(food)}
+                  onClickFoodWrapper={
+                    (food) => setState({
+                    ...state,
+                    isOpenOrderDialog: true,
+                    selectedFood: food,
+                    })
+                  }
                   imageUrl={FoodImage}
                 />
               </ItemWrapper>
             )
         }
       </FoodsList>
+      {
+        state.isOpenOrderDialog&&
+          <FoodOrderDialog
+            food={state.selectedFood}
+            isOpen={state.isOpenOrderDialog}
+            onClose={() => setState({
+              ...state,
+              isOpenOrderDialog: false,
+            })}
+          />
+      }
     </Fragment>
   )
 }

@@ -109,7 +109,6 @@ export const FoodOrderDialog = ({
             </PriceWrapper>
           </OrderTextWrapper>
         </OrderButton>
-        <p>aaa</p>
       </DialogActions>
     </Dialog>
   )
